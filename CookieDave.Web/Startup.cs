@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +25,7 @@ namespace CookieDave.Web
         {
             // authentication middleware
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
+                    .AddCookie(x => x.AccessDeniedPath = "/Account/AccessDenied");
 
             services.AddRazorPages();
         }
@@ -45,10 +46,18 @@ namespace CookieDave.Web
 
             app.UseRouting();
 
+
             // auth
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            // Cookie same-site attribute
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseEndpoints(endpoints =>
             {

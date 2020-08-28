@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CookieSample.Pages.Account
+namespace CookieDave.Web.Pages.Account
 {
     public class AccessDeniedModel : PageModel
     {
