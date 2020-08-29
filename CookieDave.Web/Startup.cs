@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace CookieDave.Web
 {
@@ -25,7 +26,13 @@ namespace CookieDave.Web
         {
             // authentication middleware
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(x => x.AccessDeniedPath = "/Account/AccessDenied");
+                    .AddCookie(x =>
+                        {
+                            x.LoginPath = "/Account/Login"; // default in CookieAuthenticationDefaults class
+                        }
+                    );
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddRazorPages();
         }
@@ -47,15 +54,13 @@ namespace CookieDave.Web
             app.UseRouting();
 
 
-            // auth
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             // Cookie same-site attribute
             var cookiePolicyOptions = new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
+                MinimumSameSitePolicy = SameSiteMode.Strict
             };
             app.UseCookiePolicy(cookiePolicyOptions);
 

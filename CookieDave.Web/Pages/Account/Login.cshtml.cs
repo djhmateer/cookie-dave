@@ -5,29 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using CookieDave.Web.Data;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
 using CookieDave.Web.Extensions;
+using Serilog;
 
 namespace CookieDave.Web.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(ILogger<LoginModel> logger)
-        {
-            _logger = logger;
-        }
-
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public string ReturnUrl { get; set; }
-
+        public string? ReturnUrl { get; set; }
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -44,14 +35,14 @@ namespace CookieDave.Web.Pages.Account
 
         public async Task OnGetAsync(string? returnUrl = null)
         {
+            Log.Information(returnUrl);
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
             // Clear the existing external cookie
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             ReturnUrl = returnUrl;
         }
@@ -62,13 +53,6 @@ namespace CookieDave.Web.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // Use Input.Email and Input.Password to authenticate the user
-                // with your custom authentication logic.
-                //
-                // For demonstration purposes, the sample validates the user
-                // on the email address maria.rodriguez@contoso.com with 
-                // any password that passes model validation.
-
                 var user = await AuthenticateUser(Input.Email, Input.Password);
 
                 if (user == null)
@@ -84,8 +68,7 @@ namespace CookieDave.Web.Pages.Account
                     new Claim(ClaimTypes.Role, "Administrator"),
                 };
 
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
@@ -97,6 +80,7 @@ namespace CookieDave.Web.Pages.Account
                     // value set here overrides the ExpireTimeSpan option of 
                     // CookieAuthenticationOptions set with AddCookie.
 
+                    IsPersistent = false, // default
                     //IsPersistent = true,
                     // Whether the authentication session is persisted across 
                     // multiple requests. When used with cookies, controls
@@ -112,15 +96,13 @@ namespace CookieDave.Web.Pages.Account
                 };
 
                 await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme, 
-                    new ClaimsPrincipal(claimsIdentity), 
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                _logger.LogInformation("User {Email} logged in at {Time}.", 
-                    user.Email, DateTime.UtcNow);
+                Log.Information($"User {user.Email} logged in at {DateTime.UtcNow}");
 
-                if (returnUrl == null) returnUrl = "/";
-
+                // creates a 302 Found which then redirects to the resource
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }
 
@@ -128,12 +110,8 @@ namespace CookieDave.Web.Pages.Account
             return Page();
         }
 
-        private async Task<ApplicationUser> AuthenticateUser(string email, string password)
+        private async Task<ApplicationUser?> AuthenticateUser(string email, string password)
         {
-            // For demonstration purposes, authenticate a user
-            // with a static email address. Ignore the password.
-            // Assume that checking the database takes 500ms
-
             await Task.Delay(500);
 
             if (email == "maria.rodriguez@contoso.com")
@@ -144,10 +122,8 @@ namespace CookieDave.Web.Pages.Account
                     FullName = "Maria Rodriguez"
                 };
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }
