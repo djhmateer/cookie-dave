@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace CookieDave.Web
 {
@@ -24,7 +19,6 @@ namespace CookieDave.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // authentication middleware
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(x =>
                         {
@@ -57,7 +51,6 @@ namespace CookieDave.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Cookie same-site attribute
             var cookiePolicyOptions = new CookiePolicyOptions
             {
                 MinimumSameSitePolicy = SameSiteMode.Strict

@@ -9,12 +9,4 @@
 
 <p>Welcome! If you can see this you are authorised.</p>
 
-@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-{
-<div class="row">
-    <div class="col-md-12">
-        <h1>Hello @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h1>
-        <p>Username: @HttpContextAccessor.HttpContext.User.Identity.Name</p>
-    </div>
-</div>
-}
+
