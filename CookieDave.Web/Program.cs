@@ -17,7 +17,7 @@ namespace CookieDave.Web
         {
             Log.Logger = new LoggerConfiguration()
                 // `LogEventLevel` requires `using Serilog.Events;`
-                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                //.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Seq( Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")

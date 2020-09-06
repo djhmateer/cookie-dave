@@ -13,19 +13,14 @@ namespace CookieDave.Web.Pages.Account
         {
         }
 
-        public async Task<IActionResult> OnPost(string? returnUrl = null)
+        public async Task<IActionResult> OnPost()
         {
             Log.Information($"User {User.Identity.Name} logged out");
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-
+            // Does a 302Found GET request to the current page
             return RedirectToPage();
         }
-
     }
 }
