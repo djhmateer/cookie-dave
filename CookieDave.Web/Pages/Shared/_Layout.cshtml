@@ -19,21 +19,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/UserRoleNeeded">UserRoleNeeded</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/AdminRoleNeeded">AdminRoleNeeded</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/ThrowException">ThrowException</a>
-                        </li>
-                    </ul>
-
                     <ul class="navbar-nav">
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
@@ -57,6 +42,23 @@
 
                         }
                     </ul>
+
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/UserRoleNeeded">UserRoleNeeded</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AdminRoleNeeded">AdminRoleNeeded</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/ThrowException">ThrowException</a>
+                        </li>
+                    </ul>
+
+
 
                 </div>
             </div>
