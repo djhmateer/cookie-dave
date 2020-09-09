@@ -1,0 +1,18 @@
+[Unit]
+Description=BLCC-dnet running on ASP.NET CORE 3
+
+[Service]
+WorkingDirectory=/usr/local/openresty/nginx/html/dnet
+ExecStart=/usr/bin/dotnet dnet.dll
+
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-blcc-dnet
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target

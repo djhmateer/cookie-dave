@@ -1,0 +1,82 @@
+#cloud-config
+
+# /var/log/cloud-init-output.log for debugging this script 
+
+# openresty nginx logs in /usr/local/openresty/nginx/logs/error.log and access.log
+# nginx conf in /usr/local/openresty/nginx/conf
+# to restart openresty after a conf update: sudo systemctl restart openresty
+
+package_upgrade: true
+runcmd:
+  # install dotnet
+  - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+  - sudo dpkg -i packages-microsoft-prod.deb
+  - sudo add-apt-repository universe -y
+  - sudo apt-get update -y
+  - sudo apt-get install apt-transport-https -y
+  - sudo apt-get update -
+
+  # need the sdk as we'll be compiling
+  - sudo apt-get install dotnet-sdk-3.1 -y
+
+  # openresty (nginx)
+  - wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
+  - sudo apt-get -y install software-properties-common
+  - sudo add-apt-repository -y "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main"
+  - sudo apt-get update -y
+
+  # the below registers openresty with systemd systemctl
+  - sudo apt-get install openresty -y
+
+  # a nice shortcut sym link
+  - sudo ln -s /usr/local/openresty/nginx/ /home/dave/nginx
+
+  # a nice restart command for openresty
+  - cd /home/dave
+  - echo "sudo systemctl restart openresty" > s.sh
+  - sudo chmod 777 s.sh
+
+  - cd /home/dave
+
+  - sudo git clone https://davemateer@bitbucket.org/davemateer/brokenlinkcheckerchecker.git blccsource
+
+  # copy the nginx.conf
+  - cd /usr/local/openresty/nginx/conf
+  - sudo mv nginx.conf nginxOLD.txt
+  - sudo cp /home/dave/blccsource/infra/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+
+  # copy all the html
+  # -a preserves file attributes
+  - sudo cp -a /home/dave/blccsource/html/. /usr/local/openresty/nginx/html/.
+
+  # build the dnet part of the site
+  - cd /home/dave/blccsource/dnet/dnet
+  - sudo dotnet publish --configuration Release
+  - cd bin/Release/netcoreapp3.1/publish
+  - sudo mkdir /usr/local/openresty/nginx/html/dnet
+  - sudo cp -a * /usr/local/openresty/nginx/html/dnet/.
+
+  - sudo chown -R www-data:www-data /usr/local/openresty/nginx/html/dnet
+  - sudo chmod -R 777 /usr/local/openresty/nginx/html/dnet
+
+  # keep kestrel alive
+  - cd /home/dave/blccsource/infra
+  - sudo cp kestrel-blcc.service /etc/systemd/system/kestrel-blcc.service
+  - sudo systemctl enable kestrel-blcc.service
+  - sudo systemctl start kestrel-blcc.service
+
+
+#
+# Bashtop
+#
+  - echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list
+  - sudo wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -
+  - sudo apt update -y
+  - sudo apt install bashtop -y
+
+# make a quick test page to signify that the server is ready to go
+  - cd /usr/local/openresty/nginx/html
+  - echo "Healthy" > healthcheck.html
+
+# OS updates need a reboot 
+  - sudo reboot now

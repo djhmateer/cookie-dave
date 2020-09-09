@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# containing public keys for building vms
+# and potentially dnsimple token to update dns
+secrets
