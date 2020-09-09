@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CookieDave.Web.Pages
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class UserRoleNeededModel : PageModel
     {
         public void OnGet()

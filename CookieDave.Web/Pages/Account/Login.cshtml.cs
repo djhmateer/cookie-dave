@@ -10,10 +10,12 @@ using CookieDave.Web.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
 using CookieDave.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 namespace CookieDave.Web.Pages.Account
 {
+    [AllowAnonymous]
     public class LoginModel : PageModel
     {
         [BindProperty]
