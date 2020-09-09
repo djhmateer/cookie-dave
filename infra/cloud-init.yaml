@@ -30,16 +30,13 @@ runcmd:
   - echo "sudo systemctl restart nginx" > s.sh
   - sudo chmod 777 s.sh
 
-  # nginx config
-  - sudo cp /home/dave/cookie-dave-source/infra/nginx.conf /etc/nginx/sites-available/default
-  - sudo nginx -s reload
-
   # clone source
   - cd /home/dave
   - sudo git clone https://github.com/djhmateer/cookie-dave.git cookie-dave-source
 
   # create a publish directory for Kestrel
   - sudo mkdir /var/www/cookie-dave-web
+
 
    # publish the web app
   - cd /home/dave/cookie-dave-source/src/CookieDave.Web
@@ -53,6 +50,10 @@ runcmd:
   # - sudo chown -R www-data:www-data /var/www/blsource
   - sudo chown -R www-data:www-data /var/www/cookie-dave-web
   # - sudo chmod -R 777 /var/www/blsource
+
+  # nginx config
+  - sudo cp /home/dave/cookie-dave-source/infra/nginx.conf /etc/nginx/sites-available/default
+  - sudo nginx -s reload
 
   # get rid of the default nginx files
   - sudo rm -rf /var/www/html
