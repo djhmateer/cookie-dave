@@ -342,3 +342,5 @@ healthchecksdb
 # containing public keys for building vms
 # and potentially dnsimple token to update dns
 secrets
+# generated helper file for ssh'ing
+a.bat
