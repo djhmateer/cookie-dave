@@ -151,8 +151,8 @@ do
     #  Delete the old group(s)
 	az group delete \
             --name $rgtodel \
-            --no-wait #\
-            # --yes
+            --no-wait \
+            --yes
     fi
 done
 
