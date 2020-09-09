@@ -2,7 +2,7 @@
 Description=CookieDave.Web
 
 [Service]
-WorkingDirectory=/var/www/cookie-dave
+WorkingDirectory=/var/www/cookie-dave-web
 ExecStart=/usr/bin/dotnet CookieDave.Web.dll
 
 Restart=always
