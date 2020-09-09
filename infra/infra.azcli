@@ -1,5 +1,4 @@
 #!/bin/bash
-# Broken Link Checker Checker azure cli scipt
 # run from linux
 # eg WSL
 # make sure the line endings are LF ie unix style
@@ -18,15 +17,15 @@ int=$(shuf -i 1-1000 -n 1)
 # generate a 34 character password (normal, capitals and numbers)
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
 
-rgprefix=BLCCTEST
+rgprefix=CookieDaveTEST
 rg=${rgprefix}${int}
 # don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
-dnsname=blcctest${int}
+dnsname=cookiedavetest${int}
 adminusername=azureuser${int}
 adminpassword=${password}
 
 region=westeurope
-vmname=blcctest${int}
+vmname=cookiedavetest${int}
 vnet=vnet${int}
 subnet=subnet${int}
 publicIPName=publicIP${int}
@@ -139,7 +138,7 @@ az vm create \
 fi
 
 # wait until the VM has rebooted and showing the correct screen
-# ping this http://brokenlinkcheckerchecker.com/healthcheck
+# ping this http://blah.westeurope.cloudapp.azure.com/healthcheck
 # until it comes back with a 200 (twice in a row as it will be there just before a reboot)
 positiveresult="Healthy"
 
@@ -166,7 +165,7 @@ do
     fi
 done
 
-# generate dns here.. had trouble doing inside next if statement
+# generate dns name here.. had trouble doing inside next if statement
 generate_post_data()
 {
   cat <<EOF
@@ -178,43 +177,43 @@ EOF
 }
 
 ### patch DNS through to the new VM only if the token file exist
-filename=../secrets/dnsimpletoken.txt
-if [ -f "$filename" ]; then
-    echo "dnsimpletoken.txt file found"
+# filename=../secrets/dnsimpletoken.txt
+# if [ -f "$filename" ]; then
+#     echo "dnsimpletoken.txt file found"
 
-    # get the first and only line
-    token=$(head -n 1 $filename)
-    echo "token is $token"
+#     # get the first and only line
+#     token=$(head -n 1 $filename)
+#     echo "token is $token"
 
-    # update DNS
-    # brokenlinkcheckerchecker.com
-    curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/18912164 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+#     # update DNS
+#     # brokenlinkcheckerchecker.com
+#     curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/18912164 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
 
-    # www.brokenlinkcheckerchecker.com
-    curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/18987716 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+#     # www.brokenlinkcheckerchecker.com
+#     curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/18987716 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
 
-    # dnet.brokenlinkcheckerchecker.com
-    curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/19726646 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+#     # dnet.brokenlinkcheckerchecker.com
+#     curl https://api.dnsimple.com/v2/63829/zones/brokenlinkcheckerchecker.com/records/19726646 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+#  fi
 
-    # delete old resource groups
-    # https://techcommunity.microsoft.com/t5/itops-talk-blog/how-to-query-azure-resources-using-the-azure-cli/ba-p/360147
+# delete old resource groups
+# https://techcommunity.microsoft.com/t5/itops-talk-blog/how-to-query-azure-resources-using-the-azure-cli/ba-p/360147
 
-    # getting all groups with the rgprefix eg BLCCTEST
-    groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+ # getting all groups with the rgprefix eg BLCCTEST
+groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
 
-    for rgtodel in $groupstodel
-    do
-        if [ "$rgtodel" = "$rg" ]; then  
-        echo "not deleting $rgtodel as have just created it"
-        else
-        #  Delete the old group(s)
-	    az group delete \
-                --name $rgtodel \
-                --no-wait \
-                --yes
-        fi
-    done
-fi
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+    #  Delete the old group(s)
+	az group delete \
+            --name $rgtodel \
+            --no-wait #\
+            # --yes
+    fi
+done
 
 # # -o is skip are you sure about ssh keys
 echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n"

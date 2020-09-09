@@ -14,57 +14,53 @@ runcmd:
   - sudo add-apt-repository universe -y
   - sudo apt-get update -y
   - sudo apt-get install apt-transport-https -y
-  - sudo apt-get update -
+  - sudo apt-get update -y
 
   # need the sdk as we'll be compiling
   - sudo apt-get install dotnet-sdk-3.1 -y
 
-  # openresty (nginx)
-  - wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
-  - sudo apt-get -y install software-properties-common
-  - sudo add-apt-repository -y "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main"
-  - sudo apt-get update -y
-
-  # the below registers openresty with systemd systemctl
-  - sudo apt-get install openresty -y
+  # nginx
+  - sudo apt-get install nginx -y
 
   # a nice shortcut sym link
-  - sudo ln -s /usr/local/openresty/nginx/ /home/dave/nginx
+  - sudo ln -s /var/www/ /home/dave/www
 
-  # a nice restart command for openresty
+  # a nice restart command for nginx
   - cd /home/dave
-  - echo "sudo systemctl restart openresty" > s.sh
+  - echo "sudo systemctl restart nginx" > s.sh
   - sudo chmod 777 s.sh
 
+  # nginx config
+  - sudo cp /home/dave/cookie-dave-source/infra/nginx.conf /etc/nginx/sites-available/default
+  - sudo nginx -s reload
+
+
+  # clone source
   - cd /home/dave
+  - sudo git clone https://github.com/djhmateer/cookie-dave.git cookie-dave-source
 
-  - sudo git clone https://davemateer@bitbucket.org/davemateer/brokenlinkcheckerchecker.git blccsource
+  # create a publish directory for Kestrel
+  - sudo mkdir /var/www/cookie-dave-web
 
-  # copy the nginx.conf
-  - cd /usr/local/openresty/nginx/conf
-  - sudo mv nginx.conf nginxOLD.txt
-  - sudo cp /home/dave/blccsource/infra/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+   # publish the web app
+  - cd /home/dave/cookie-dave-source/src/CookieDave.Web
+  - sudo dotnet publish --configuration Release 
 
-  # copy all the html
-  # -a preserves file attributes
-  - sudo cp -a /home/dave/blccsource/html/. /usr/local/openresty/nginx/html/.
+  # copy files to www directory
+  - cd /home/dave/cookie-dave-source/src/CookieDave.Web/bin/Release/netcoreapp3.1/publish/
+  - sudo cp -a * /var/www/cookie-dave-web/.
 
-  # build the dnet part of the site
-  - cd /home/dave/blccsource/dnet/dnet
-  - sudo dotnet publish --configuration Release
-  - cd bin/Release/netcoreapp3.1/publish
-  - sudo mkdir /usr/local/openresty/nginx/html/dnet
-  - sudo cp -a * /usr/local/openresty/nginx/html/dnet/.
+ # change ownership of the files - TODO review this
+  # - sudo chown -R www-data:www-data /var/www/blsource
+  - sudo chown -R www-data:www-data /var/www/cookie-dave-source
+  # - sudo chmod -R 777 /var/www/blsource
 
-  - sudo chown -R www-data:www-data /usr/local/openresty/nginx/html/dnet
-  - sudo chmod -R 777 /usr/local/openresty/nginx/html/dnet
 
-  # keep kestrel alive
-  - cd /home/dave/blccsource/infra
-  - sudo cp kestrel-blcc.service /etc/systemd/system/kestrel-blcc.service
+  # make the systemd service to keep Kestrel alive
+  - cd /var/www/cookie-dave-source/infra
+  - sudo cp kestrel-blc.service /etc/systemd/system/kestrel-blc.service
   - sudo systemctl enable kestrel-blcc.service
   - sudo systemctl start kestrel-blcc.service
-
 
 #
 # Bashtop
@@ -75,7 +71,7 @@ runcmd:
   - sudo apt install bashtop -y
 
 # make a quick test page to signify that the server is ready to go
-  - cd /usr/local/openresty/nginx/html
+  - cd /var/www/cookie-dave-web
   - echo "Healthy" > healthcheck.html
 
 # OS updates need a reboot 

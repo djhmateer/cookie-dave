@@ -1,15 +1,15 @@
 [Unit]
-Description=BLCC-dnet running on ASP.NET CORE 3
+Description=CookieDave.Web
 
 [Service]
-WorkingDirectory=/usr/local/openresty/nginx/html/dnet
-ExecStart=/usr/bin/dotnet dnet.dll
+WorkingDirectory=/var/www/cookie-dave
+ExecStart=/usr/bin/dotnet CookieDave.Web.dll
 
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
 KillSignal=SIGINT
-SyslogIdentifier=dotnet-blcc-dnet
+SyslogIdentifier=dotnet-CookieDave.Web
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
