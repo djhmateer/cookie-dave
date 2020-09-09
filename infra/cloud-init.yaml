@@ -23,7 +23,7 @@ runcmd:
   - sudo apt-get install nginx -y
 
   # a nice shortcut sym link
-  - sudo ln -s /var/www/ /home/dave/www
+  # - sudo ln -s /var/www/ /home/dave/www
 
   # a nice restart command for nginx
   - cd /home/dave
