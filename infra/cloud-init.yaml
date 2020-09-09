@@ -34,7 +34,6 @@ runcmd:
   - sudo cp /home/dave/cookie-dave-source/infra/nginx.conf /etc/nginx/sites-available/default
   - sudo nginx -s reload
 
-
   # clone source
   - cd /home/dave
   - sudo git clone https://github.com/djhmateer/cookie-dave.git cookie-dave-source
