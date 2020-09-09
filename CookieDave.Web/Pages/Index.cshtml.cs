@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CookieDave.Web.Pages
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class IndexModel : PageModel
     {
         public void OnGet()

@@ -15,7 +15,7 @@ using Serilog;
 
 namespace CookieDave.Web.Pages.Account
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class LoginModel : PageModel
     {
         [BindProperty]
@@ -67,7 +67,7 @@ namespace CookieDave.Web.Pages.Account
                 {
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim("FullName", user.FullName),
-                    new Claim(ClaimTypes.Role, "Administrator"),
+                    new Claim(ClaimTypes.Role,  user.IsAdmin ? "Admin" : "User"),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -102,7 +102,7 @@ namespace CookieDave.Web.Pages.Account
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                Log.Information($"User {user.Email} logged in at {DateTime.UtcNow}");
+                Log.Information($"User {user.Email} IsAdmin: {user.IsAdmin} logged in at {DateTime.UtcNow}");
 
                 // creates a 302 Found which then redirects to the resource
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
@@ -118,10 +118,21 @@ namespace CookieDave.Web.Pages.Account
 
             if (email == "maria.rodriguez@contoso.com")
             {
-                return new ApplicationUser()
+                return new ApplicationUser
                 {
                     Email = "maria.rodriguez@contoso.com",
-                    FullName = "Maria Rodriguez"
+                    FullName = "Maria Rodriguez",
+                    IsAdmin = false
+                };
+            }
+
+            if (email == "admin@contoso.com")
+            {
+                return new ApplicationUser
+                {
+                    Email = "admin@contoso.com",
+                    FullName = "Admin",
+                    IsAdmin = true
                 };
             }
 
