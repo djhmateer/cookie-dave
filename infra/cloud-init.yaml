@@ -54,10 +54,11 @@ runcmd:
   - sudo chown -R www-data:www-data /var/www/cookie-dave-source
   # - sudo chmod -R 777 /var/www/blsource
 
+  # get rid of the default nginx files
+  - sudo rm -rf /var/www/html
 
   # make the systemd service to keep Kestrel alive
-  - cd /var/www/cookie-dave-source/infra
-  - sudo cp kestrel-blc.service /etc/systemd/system/kestrel-blc.service
+  - sudo cp /home/dave/cookie-dave-source/infra/kestrel-blc.service /etc/systemd/system/kestrel-blc.service
   - sudo systemctl enable kestrel-blcc.service
   - sudo systemctl start kestrel-blcc.service
 
@@ -70,8 +71,8 @@ runcmd:
   - sudo apt install bashtop -y
 
 # make a quick test page to signify that the server is ready to go
-  - cd /var/www/cookie-dave-web
-  - echo "Healthy" > healthcheck.html
+  # - cd /var/www/cookie-dave-web
+  # - echo "Healthy" > healthcheck.html
 
 # OS updates need a reboot 
   - sudo reboot now
