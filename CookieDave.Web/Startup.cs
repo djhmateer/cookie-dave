@@ -39,6 +39,7 @@ namespace CookieDave.Web
             services.AddRazorPages(x =>
             {
                 x.Conventions.AllowAnonymousToPage("/Index");
+                x.Conventions.AllowAnonymousToPage("/Privacy");
                 x.Conventions.AllowAnonymousToPage("/Account/Login");
                 x.Conventions.AllowAnonymousToPage("/Account/Logout");
 
@@ -68,11 +69,7 @@ namespace CookieDave.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //var cookiePolicyOptions = new CookiePolicyOptions
-            //{
-            //    MinimumSameSitePolicy = SameSiteMode.Strict
-            //};
-            //app.UseCookiePolicy(cookiePolicyOptions);
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 
             app.UseEndpoints(endpoints =>
             {
