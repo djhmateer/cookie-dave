@@ -51,16 +51,16 @@ runcmd:
 
  # change ownership of the files - TODO review this
   # - sudo chown -R www-data:www-data /var/www/blsource
-  - sudo chown -R www-data:www-data /var/www/cookie-dave-source
+  - sudo chown -R www-data:www-data /var/www/cookie-dave-web
   # - sudo chmod -R 777 /var/www/blsource
 
   # get rid of the default nginx files
   - sudo rm -rf /var/www/html
 
   # make the systemd service to keep Kestrel alive
-  - sudo cp /home/dave/cookie-dave-source/infra/kestrel-blc.service /etc/systemd/system/kestrel-blc.service
-  - sudo systemctl enable kestrel-blcc.service
-  - sudo systemctl start kestrel-blcc.service
+  - sudo cp /home/dave/cookie-dave-source/infra/kestrel-cookie-dave.service /etc/systemd/system/kestrel-cookie-dave.service
+  - sudo systemctl enable kestrel-cookie-dave.service
+  - sudo systemctl start kestrel-cookie-dave.service
 
 #
 # Bashtop
