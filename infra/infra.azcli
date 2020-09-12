@@ -130,11 +130,11 @@ az vm create \
     --nics ${nicName} \
     --image ${image} \
     --custom-data cloud-init.yaml \
-    --size Standard_B2ms \
+    --size Standard_B1s
     #--generate-ssh-keys \
     # above means we will use a generated ssh key from this machine
-    --admin-username ${adminusername} \
-    --admin-password ${adminpassword}
+    # --admin-username ${adminusername} \
+    # --admin-password ${adminpassword}
 fi
 
 # delete old resource groups
