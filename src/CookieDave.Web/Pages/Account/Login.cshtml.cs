@@ -15,7 +15,6 @@ using Serilog;
 
 namespace CookieDave.Web.Pages.Account
 {
-    //[AllowAnonymous]
     public class LoginModel : PageModel
     {
         [BindProperty]

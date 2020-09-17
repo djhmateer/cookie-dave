@@ -25,17 +25,16 @@ namespace CookieDave.Web
 
             services.AddAuthorization(options =>
             {
-                // all authenticated users are in the role of User.
-                //options.AddPolicy("User", p => p.RequireRole("User"));
+                // all authenticated users are in the role of User (set in Login.cshtml.cs)
                 options.AddPolicy("Admin", p => p.RequireRole("Admin"));
 
-                // has to be authenticated to view a page by default
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    // user has to be authenticated to view a page by default
                     .RequireAuthenticatedUser()
                     .Build();
             });
 
-            // allow pages here
+            // set all page rules (except default authenticated User role)
             services.AddRazorPages(x =>
             {
                 x.Conventions.AllowAnonymousToPage("/Index");
@@ -45,6 +44,7 @@ namespace CookieDave.Web
 
                 // all authenticated users have the User role so this is not needed
                 //x.Conventions.AuthorizePage("/UserRoleNeeded", "User");
+
                 x.Conventions.AuthorizePage("/AdminRoleNeeded", "Admin");
             });
 
