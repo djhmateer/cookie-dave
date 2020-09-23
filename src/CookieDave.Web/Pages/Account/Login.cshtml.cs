@@ -20,6 +20,7 @@ namespace CookieDave.Web.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
         public string? ReturnUrl { get; set; }
+
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -32,6 +33,9 @@ namespace CookieDave.Web.Pages.Account
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
+
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
 
         public async Task OnGetAsync(string? returnUrl = null)
@@ -71,6 +75,8 @@ namespace CookieDave.Web.Pages.Account
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
+                Log.Information($@"Remember me: {Input.RememberMe}");
+
                 var authProperties = new AuthenticationProperties
                 {
                     //AllowRefresh = <bool>,
@@ -81,7 +87,7 @@ namespace CookieDave.Web.Pages.Account
                     // value set here overrides the ExpireTimeSpan option of 
                     // CookieAuthenticationOptions set with AddCookie.
 
-                    IsPersistent = false, // default
+                    IsPersistent = Input.RememberMe, // false is default
                     //IsPersistent = true,
                     // Whether the authentication session is persisted across 
                     // multiple requests. When used with cookies, controls
