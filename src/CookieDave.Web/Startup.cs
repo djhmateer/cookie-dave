@@ -1,4 +1,3 @@
-using System.Xml.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +38,8 @@ namespace CookieDave.Web
             {
                 x.Conventions.AllowAnonymousToPage("/Index");
                 x.Conventions.AllowAnonymousToPage("/Privacy");
+                x.Conventions.AllowAnonymousToPage("/ThrowException");
+                x.Conventions.AllowAnonymousToPage("/Error");
                 x.Conventions.AllowAnonymousToPage("/Account/Login");
                 x.Conventions.AllowAnonymousToPage("/Account/Logout");
 
