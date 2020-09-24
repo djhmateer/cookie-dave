@@ -127,7 +127,7 @@ namespace CookieDave.Web.Pages.Account
                 return new ApplicationUser
                 {
                     Email = "tier1@contoso.com",
-                    CDRole = CDRole.Tier1
+                    CDRole = CDRole.Tier1Role
                 };
             }
 
@@ -136,7 +136,7 @@ namespace CookieDave.Web.Pages.Account
                 return new ApplicationUser
                 {
                     Email = "tier2@contoso.com",
-                    CDRole = CDRole.Tier2
+                    CDRole = CDRole.Tier2Role
                 };
             }
 
@@ -145,7 +145,7 @@ namespace CookieDave.Web.Pages.Account
                 return new ApplicationUser
                 {
                     Email = "admin@contoso.com",
-                    CDRole = CDRole.Admin
+                    CDRole = CDRole.AdminRole
                 };
             }
 
