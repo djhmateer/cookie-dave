@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using static CookieDave.Web.Data.CDRole;
+using static CookieDave.Web.Data.CDPolicy;
 
 namespace CookieDave.Web
 {
@@ -24,8 +26,13 @@ namespace CookieDave.Web
 
             services.AddAuthorization(options =>
             {
-                // all authenticated users are in the role of User (set in Login.cshtml.cs)
-                options.AddPolicy("Admin", p => p.RequireRole("Admin"));
+                // using a class with constants instead of enum to avoid ToString()
+
+                options.AddPolicy(Tier1Policy, p => p.RequireRole(Tier1Role, Tier2Role, AdminRole));
+
+                options.AddPolicy(Tier2Policy, p => p.RequireRole(Tier2Role, AdminRole));
+
+                options.AddPolicy(AdminPolicy, p => p.RequireRole(AdminRole));
 
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     // user has to be authenticated to view a page by default
@@ -33,20 +40,21 @@ namespace CookieDave.Web
                     .Build();
             });
 
-            // set all page rules (except default authenticated User role)
+            // set all page rules
             services.AddRazorPages(x =>
             {
                 x.Conventions.AllowAnonymousToPage("/Index");
-                x.Conventions.AllowAnonymousToPage("/Privacy");
+                x.Conventions.AllowAnonymousToPage("/Anonymous");
                 x.Conventions.AllowAnonymousToPage("/ThrowException");
                 x.Conventions.AllowAnonymousToPage("/Error");
                 x.Conventions.AllowAnonymousToPage("/Account/Login");
                 x.Conventions.AllowAnonymousToPage("/Account/Logout");
 
-                // all authenticated users have the User role so this is not needed
-                //x.Conventions.AuthorizePage("/UserRoleNeeded", "User");
+                x.Conventions.AuthorizePage("/Tier1RoleNeeded", Tier1Policy);
 
-                x.Conventions.AuthorizePage("/AdminRoleNeeded", "Admin");
+                x.Conventions.AuthorizePage("/Tier2RoleNeeded", Tier2Policy);
+
+                x.Conventions.AuthorizePage("/AdminRoleNeeded", AdminPolicy);
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

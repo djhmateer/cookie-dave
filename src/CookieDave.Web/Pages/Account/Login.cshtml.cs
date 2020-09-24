@@ -69,12 +69,13 @@ namespace CookieDave.Web.Pages.Account
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Email),
-                    new Claim("FullName", user.FullName),
-                    new Claim(ClaimTypes.Role,  user.IsAdmin ? "Admin" : "User"),
+                    //new Claim("FullName", user.FullName),
+                    new Claim(ClaimTypes.Role,  user.CDRole.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
+                Log.Information($@"CDRole: {user.CDRole.ToString()}");
                 Log.Information($@"Remember me: {Input.RememberMe}");
 
                 var authProperties = new AuthenticationProperties
@@ -107,7 +108,7 @@ namespace CookieDave.Web.Pages.Account
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                Log.Information($"User {user.Email} IsAdmin: {user.IsAdmin} logged in at {DateTime.UtcNow}");
+                Log.Information($"User {user.Email} CDRole: {user.CDRole} logged in at {DateTime.UtcNow}");
 
                 // creates a 302 Found which then redirects to the resource
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
@@ -121,13 +122,21 @@ namespace CookieDave.Web.Pages.Account
         {
             await Task.Delay(500);
 
-            if (email == "maria.rodriguez@contoso.com")
+            if (email == "tier1@contoso.com")
             {
                 return new ApplicationUser
                 {
-                    Email = "maria.rodriguez@contoso.com",
-                    FullName = "Maria Rodriguez",
-                    IsAdmin = false
+                    Email = "tier1@contoso.com",
+                    CDRole = CDRole.Tier1
+                };
+            }
+
+            if (email == "tier2@contoso.com")
+            {
+                return new ApplicationUser
+                {
+                    Email = "tier2@contoso.com",
+                    CDRole = CDRole.Tier2
                 };
             }
 
@@ -136,8 +145,7 @@ namespace CookieDave.Web.Pages.Account
                 return new ApplicationUser
                 {
                     Email = "admin@contoso.com",
-                    FullName = "Admin",
-                    IsAdmin = true
+                    CDRole = CDRole.Admin
                 };
             }
 

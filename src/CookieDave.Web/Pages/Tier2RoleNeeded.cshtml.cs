@@ -2,7 +2,7 @@
 
 namespace CookieDave.Web.Pages
 {
-    public class PrivacyModel : PageModel
+    public class Tier2RoleNeeded : PageModel
     {
         public void OnGet()
         {

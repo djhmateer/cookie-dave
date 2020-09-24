@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace CookieDave.Web.Pages
 {
     //[Authorize]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "AdminRole")]
     public class AdminRoleNeededModel : PageModel
     {
         public void OnGet()
