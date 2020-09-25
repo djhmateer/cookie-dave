@@ -1,37 +1,22 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using CookieDave.Web.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using static CookieDave.Web.Data.CDRole;
 
 namespace CookieDave.Web.Pages
 {
-    //[Authorize(Roles = "Tier1Role,Tier2Role")]
-    [Authorize(Roles = Tier1AndTier2Role)]
+    [AuthorizeRoles(Tier1, Tier2, Admin)]
     public class CrawlModel : PageModel
     {
         private readonly IHttpContextAccessor httpContextAccessor;
+        public CrawlModel(IHttpContextAccessor httpContextAccessor) => this.httpContextAccessor = httpContextAccessor;
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
-        //public string Message { get; set; }   
-        public CrawlModel(IHttpContextAccessor httpContextAccessor)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
-        //public void OnGet()
         public void OnGet()
         {
-            // how to get the User and Roles/Policy???
-
             var name = httpContextAccessor.HttpContext.User.Identity.Name;
-
-            //var claims = httpContextAccessor.HttpContext.User.Claims;
-            //foreach (var claim in claims)
-            //{
-            //    var t = claim.Value;
-            //}
 
             Message = "roles: ";
             var claims = httpContextAccessor.HttpContext.User.FindAll(ClaimTypes.Role);
@@ -42,4 +27,5 @@ namespace CookieDave.Web.Pages
             }
         }
     }
+
 }

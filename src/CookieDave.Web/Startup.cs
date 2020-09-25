@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using static CookieDave.Web.Data.CDRole;
-using static CookieDave.Web.Data.CDPolicy;
 
 namespace CookieDave.Web
 {
@@ -27,11 +25,11 @@ namespace CookieDave.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AtLeastTier1, p => p.RequireRole(Tier1Role, Tier2Role, AdminRole));
+                //options.AddPolicy(AtLeastTier1, p => p.RequireRole(Tier1, Tier2, Admin));
 
-                options.AddPolicy(AtLeastTier2, p => p.RequireRole(Tier2Role, AdminRole));
+                //options.AddPolicy(AtLeastTier2, p => p.RequireRole(Tier2, Admin));
 
-                options.AddPolicy(AdminOnly, p => p.RequireRole(AdminRole));
+                //options.AddPolicy(AdminOnly, p => p.RequireRole(Admin));
 
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     // user has to be authenticated to view a page by default
@@ -49,19 +47,10 @@ namespace CookieDave.Web
                 x.Conventions.AllowAnonymousToPage("/Account/Login");
                 x.Conventions.AllowAnonymousToPage("/Account/Logout");
 
-                x.Conventions.AuthorizePage("/Tier1RoleNeeded", AtLeastTier1);
-                //x.Conventions.AuthorizePage("/Crawl", AtLeastTier1);
-
-                x.Conventions.AuthorizePage("/Tier2RoleNeeded", AtLeastTier2);
-
-                x.Conventions.AuthorizePage("/AdminRoleNeeded", AdminOnly);
+                //x.Conventions.AuthorizePage("/Tier1RoleNeeded", AtLeastTier1);
+                //x.Conventions.AuthorizePage("/Tier2RoleNeeded", AtLeastTier2);
+                //x.Conventions.AuthorizePage("/AdminRoleNeeded", AdminOnly);
             });
-
-            //services.AddDistributedMemoryCache();
-            //services.AddSession(options => {
-            //    options.IdleTimeout = TimeSpan.FromMinutes(1);
-            //});
-
 
             services.AddHttpContextAccessor();
         }
@@ -86,7 +75,6 @@ namespace CookieDave.Web
 
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 
-            //app.UseSession(); // ?????
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
