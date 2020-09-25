@@ -1,0 +1,19 @@
+﻿@page
+@model CrawlModel
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Crawl";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Crawl - your Tier is: @Model.Message</p>
+
+
+@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+{
+    <p>Name @User.Identity.Name</p>
+}
+
+

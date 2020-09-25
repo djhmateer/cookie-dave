@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -26,13 +27,11 @@ namespace CookieDave.Web
 
             services.AddAuthorization(options =>
             {
-                // using a class with constants instead of enum to avoid ToString()
+                options.AddPolicy(AtLeastTier1, p => p.RequireRole(Tier1Role, Tier2Role, AdminRole));
 
-                options.AddPolicy(Tier1Policy, p => p.RequireRole(Tier1Role, Tier2Role, AdminRole));
+                options.AddPolicy(AtLeastTier2, p => p.RequireRole(Tier2Role, AdminRole));
 
-                options.AddPolicy(Tier2Policy, p => p.RequireRole(Tier2Role, AdminRole));
-
-                options.AddPolicy(AdminPolicy, p => p.RequireRole(AdminRole));
+                options.AddPolicy(AdminOnly, p => p.RequireRole(AdminRole));
 
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     // user has to be authenticated to view a page by default
@@ -40,7 +39,7 @@ namespace CookieDave.Web
                     .Build();
             });
 
-            // set all page rules
+            // set all page Policy rules
             services.AddRazorPages(x =>
             {
                 x.Conventions.AllowAnonymousToPage("/Index");
@@ -50,14 +49,21 @@ namespace CookieDave.Web
                 x.Conventions.AllowAnonymousToPage("/Account/Login");
                 x.Conventions.AllowAnonymousToPage("/Account/Logout");
 
-                x.Conventions.AuthorizePage("/Tier1RoleNeeded", Tier1Policy);
+                x.Conventions.AuthorizePage("/Tier1RoleNeeded", AtLeastTier1);
+                //x.Conventions.AuthorizePage("/Crawl", AtLeastTier1);
 
-                x.Conventions.AuthorizePage("/Tier2RoleNeeded", Tier2Policy);
+                x.Conventions.AuthorizePage("/Tier2RoleNeeded", AtLeastTier2);
 
-                x.Conventions.AuthorizePage("/AdminRoleNeeded", AdminPolicy);
+                x.Conventions.AuthorizePage("/AdminRoleNeeded", AdminOnly);
             });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddDistributedMemoryCache();
+            //services.AddSession(options => {
+            //    options.IdleTimeout = TimeSpan.FromMinutes(1);
+            //});
+
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +86,7 @@ namespace CookieDave.Web
 
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 
+            //app.UseSession(); // ?????
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

@@ -19,14 +19,15 @@
     public class CDRole
     {
         public const string Tier1Role = "Tier1Role";
+        public const string Tier1AndTier2Role = "Tier1Role,Tier2Role";
         public const string Tier2Role = "Tier2Role";
         public const string AdminRole = "AdminRole";
     }
 
     public class CDPolicy
     {
-        public const string Tier1Policy = "Tier1Policy";
-        public const string Tier2Policy = "Tier2Policy";
-        public const string AdminPolicy = "AdminPolicy";
+        public const string AtLeastTier1 = "AtLeastTier1";
+        public const string AtLeastTier2 = "AtLeastTier2";
+        public const string AdminOnly = "AdminOnly";
     }
 }

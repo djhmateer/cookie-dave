@@ -70,12 +70,12 @@ namespace CookieDave.Web.Pages.Account
                 {
                     new Claim(ClaimTypes.Name, user.Email),
                     //new Claim("FullName", user.FullName),
-                    new Claim(ClaimTypes.Role,  user.CDRole.ToString())
+                    new Claim(ClaimTypes.Role,  user.CDRole)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                Log.Information($@"CDRole: {user.CDRole.ToString()}");
+                Log.Information($@"CDRole: {user.CDRole}");
                 Log.Information($@"Remember me: {Input.RememberMe}");
 
                 var authProperties = new AuthenticationProperties
