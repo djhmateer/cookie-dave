@@ -110,8 +110,13 @@ namespace CookieDave.Web.Pages.Account
 
                 Log.Information($"User {user.Email} CDRole: {user.CDRole} logged in at {DateTime.UtcNow}");
 
+                // if returnUrl is null, then /
+                var thing = "/";
+                if (returnUrl != null) thing = returnUrl;
+
                 // creates a 302 Found which then redirects to the resource
-                return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                //return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                return LocalRedirect(thing);
             }
 
             // Something failed. Redisplay the form.
