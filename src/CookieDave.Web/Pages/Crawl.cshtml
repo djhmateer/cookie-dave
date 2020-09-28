@@ -8,9 +8,10 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Crawl - your Tier is: @Model.Message</p>
+<p>Crawl - Message: @Model.Message</p>
 
 
+<h2>From razor pages view side we can see the User</h2>
 @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
 {
     <p>Name @User.Identity.Name</p>
