@@ -6,11 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using CookieDave.Web.Data;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
-using CookieDave.Web.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 namespace CookieDave.Web.Pages.Account
@@ -18,11 +15,11 @@ namespace CookieDave.Web.Pages.Account
     public class LoginModel : PageModel
     {
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel? Input { get; set; }
         public string? ReturnUrl { get; set; }
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         public class InputModel
         {
@@ -110,10 +107,8 @@ namespace CookieDave.Web.Pages.Account
 
                 Log.Information($"User {user.Email} CDRole: {user.CDRole} logged in at {DateTime.UtcNow}");
 
-                returnUrl ??= "/";
-
                 // creates a 302 Found which then redirects to the resource
-                return LocalRedirect(returnUrl);
+                return LocalRedirect(returnUrl ?? "/");
             }
 
             // Something failed. Redisplay the form.
