@@ -17,6 +17,7 @@ namespace CookieDave.Web.Pages
             Message = "Role claims are: ";
             foreach (var claim in roleClaims)
             {
+                // Tier1, Tier2, Admin etc...
                 Message += claim.Value + " ";
             }
         }
