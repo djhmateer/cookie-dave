@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CookieDave.Web.IntegrationTests.Pages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
 using Xunit;
@@ -35,7 +36,8 @@ namespace CookieDave.Web.IntegrationTests
 
             var response = await client.GetAsync(path);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            response.AssertOk();
 
             Assert.Equal(expected.MediaType, response.Content.Headers.ContentType.MediaType);
         }

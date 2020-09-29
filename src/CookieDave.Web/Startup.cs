@@ -1,4 +1,5 @@
 using System;
+using CookieDave.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,8 @@ namespace CookieDave.Web
             services.AddRazorPages();
 
             services.AddHttpContextAccessor();
+
+            services.AddSingleton<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

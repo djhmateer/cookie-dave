@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CookieDave.Web.IntegrationTests.Pages;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -22,7 +23,8 @@ namespace CookieDave.Web.IntegrationTests
             var response = await _client.GetAsync("/healthcheck");
 
             //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            response.AssertOk();
         }
 
         [Fact]

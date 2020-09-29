@@ -21,7 +21,8 @@ namespace CookieDave.Web.IntegrationTests.Pages
 
             var response = await client.GetAsync("/");
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            response.AssertOk();
 
             using var content = await HtmlHelpers.GetDocumentAsync(response);
 
