@@ -33,6 +33,9 @@ namespace CookieDave.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // custom 404 page
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

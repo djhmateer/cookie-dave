@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieDave.Web", "CookieDave.Web\CookieDave.Web.csproj", "{509CEBFC-669D-4E21-94F1-104606480117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieDave.Web.IntegrationTests", "CookieDave.Web.IntegrationTests\CookieDave.Web.IntegrationTests.csproj", "{A60467D9-01D0-464B-A7D8-9193E1688A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookieDave.Web.IntegrationTests", "CookieDave.Web.IntegrationTests\CookieDave.Web.IntegrationTests.csproj", "{A60467D9-01D0-464B-A7D8-9193E1688A42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
