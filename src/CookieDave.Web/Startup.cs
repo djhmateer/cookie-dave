@@ -33,8 +33,6 @@ namespace CookieDave.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // custom 404 page
-            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             if (env.IsDevelopment())
             {
@@ -44,6 +42,24 @@ namespace CookieDave.Web
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            // this interfered with my Forbidden status code in Authorization tests
+            //app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
+            // https://joonasw.net/view/custom-error-pages
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+
+                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    string originalPath = ctx.Request.Path.Value;
+                    ctx.Items["originalPath"] = originalPath;
+                    ctx.Request.Path = "/errors/404";
+                    await next();
+                }
+            });
 
             app.UseStaticFiles();
             app.UseRouting();

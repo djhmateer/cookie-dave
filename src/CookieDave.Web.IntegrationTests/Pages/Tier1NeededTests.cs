@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using CookieDave.Web.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CookieDave.Web.IntegrationTests.Pages
@@ -28,6 +32,8 @@ namespace CookieDave.Web.IntegrationTests.Pages
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
             Assert.StartsWith("http://localhost/account/login", response.Headers.Location.OriginalString, StringComparison.OrdinalIgnoreCase);
         }
+
+       
     }
 
 }
