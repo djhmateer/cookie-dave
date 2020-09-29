@@ -24,11 +24,11 @@ namespace CookieDave.Web.IntegrationTests.Helpers
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, "Test"), 
+                new Claim(ClaimTypes.Name, "Alice"), 
                 new Claim(ClaimTypes.Role, Options.Role),
-                new Claim("MemberId", "1"),
-                new Claim("MemberForename", "Test"),
-                new Claim("MemberSurname", "User")
+                //new Claim("MemberId", "1"),
+                //new Claim("MemberForename", "Test"),
+                //new Claim("MemberSurname", "User")
             };
 
             var identity = new ClaimsIdentity(claims, "Test");

@@ -22,17 +22,6 @@ namespace CookieDave.Web.IntegrationTests.Pages
             _factory = factory;
         }
 
-        [Fact]
-        public async Task Get_SecurePageIsForbiddenForAnUnauthenticatedUser()
-        {
-            var client = _factory.CreateClient();
-
-            var response = await client.GetAsync("/Tier2RoleNeeded");
-
-            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-            Assert.StartsWith("http://localhost/account/login", response.Headers.Location.OriginalString, StringComparison.OrdinalIgnoreCase);
-        }
-
         public static IEnumerable<object[]> RoleAccess => new List<object[]>
         {
             // 403Forbidden

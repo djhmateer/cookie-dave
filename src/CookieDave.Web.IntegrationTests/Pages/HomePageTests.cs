@@ -30,5 +30,4 @@ namespace CookieDave.Web.IntegrationTests.Pages
             Assert.Equal("Welcome to CookieDave", h1.TextContent);
         }
     }
-
 }

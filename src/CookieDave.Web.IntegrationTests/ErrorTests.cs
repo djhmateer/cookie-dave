@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading.Tasks;
 using CookieDave.Web.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -22,6 +18,7 @@ namespace CookieDave.Web.IntegrationTests
 
         [Theory]
         [InlineData("/asdfasdf")]
+        [InlineData("/pagenothere")]
         public async Task Get_PageNotThere_ShouldReturn404AndCustomErrorPage(string url)
         {
             var client = _factory.CreateClient();

@@ -6,6 +6,8 @@
 # nginx conf in /usr/local/openresty/nginx/conf
 # to restart openresty after a conf update: sudo systemctl restart openresty
 
+# ~/testout.txt for the dotnet test output
+
 package_upgrade: true
 runcmd:
   # install dotnet
@@ -33,6 +35,13 @@ runcmd:
   # clone source
   - cd /home/dave
   - sudo git clone https://github.com/djhmateer/cookie-dave.git cookie-dave-source
+
+  # run the tests on the server as a last ditch safety net
+  - cd cookie-dave-source/src/CookieDave.Web.IntegrationTests
+  - sudo dotnet test -v n > ~/testout.txt
+
+
+
 
   # create a publish directory for Kestrel
   - sudo mkdir /var/www/cookie-dave-web

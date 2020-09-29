@@ -12,6 +12,7 @@ namespace CookieDave.Web.IntegrationTests
 
         public GeneralPageTests(WebApplicationFactory<Startup> factory)
         {
+            factory.ClientOptions.AllowAutoRedirect = false;
             _factory = factory;
         }
 

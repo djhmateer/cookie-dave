@@ -22,24 +22,24 @@
                     <ul class="navbar-nav">
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                            </li>
-                            <li class="nav-item">
-                                @*<form class="form-inline" action="/Account/Logout" method="post">*@
-                                <form class="form-inline" asp-page="/Account/Logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                        </li>
+                        <li class="nav-item">
+                            @*<form class="form-inline" action="/Account/Logout" method="post">*@
+                            <form class="form-inline" asp-page="/Account/Logout" method="post">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
+                        </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Account/Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Account/Login">Login</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Account/Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Account/Login">Login</a>
+                        </li>
 
                         }
                     </ul>
@@ -66,7 +66,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/healthcheck">healthcheck</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/nopagehere">nopagehere</a>
+                        </li>
                     </ul>
 
 

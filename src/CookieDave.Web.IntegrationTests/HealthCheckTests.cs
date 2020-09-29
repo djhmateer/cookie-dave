@@ -12,7 +12,7 @@ namespace CookieDave.Web.IntegrationTests
 
         public HealthCheckTests(WebApplicationFactory<Startup> factory)
         {
-            //_client = factory.CreateDefaultClient();
+            factory.ClientOptions.AllowAutoRedirect = false;
             _client = factory.CreateClient();
         }
 
