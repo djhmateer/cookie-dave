@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
@@ -7,20 +8,39 @@ namespace CookieDave.Web.IntegrationTests
 {
     public class HealthCheckTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _client;
 
         public HealthCheckTests(WebApplicationFactory<Startup> factory)
         {
-            _httpClient = factory.CreateDefaultClient();
+            //_client = factory.CreateDefaultClient();
+            _client = factory.CreateClient();
         }
 
         [Fact]
         public async Task HealthCheck_ReturnsOk()
         {
-            var response = await _httpClient.GetAsync("/healthcheck");
+            var response = await _client.GetAsync("/healthcheck");
 
             //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task HealthCheck_NoCache()
+        {
+            var response = await _client.GetAsync("/healthcheck");
+
+            var header = response.Headers.CacheControl;
+
+            // no caching yet
+            Assert.Null(header);
+
+            //Assert.False(header.MaxAge.HasValue);
+
+            // cache on the client and any intermediaries?
+            //Assert.False(header.Public);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }
