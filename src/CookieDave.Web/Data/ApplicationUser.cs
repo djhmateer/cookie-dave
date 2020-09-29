@@ -10,7 +10,7 @@ namespace CookieDave.Web.Data
         public string CDRole { get; set; }
     }
 
-    static class CDRole
+    public static class CDRole
     {
         public const string Tier1 = "Tier1";
         public const string Tier2 = "Tier2";

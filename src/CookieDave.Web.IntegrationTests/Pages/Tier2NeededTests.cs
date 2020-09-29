@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CookieDave.Web.Data;
 using CookieDave.Web.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -35,9 +36,10 @@ namespace CookieDave.Web.IntegrationTests.Pages
         public static IEnumerable<object[]> RoleAccess => new List<object[]>
         {
             // 403Forbidden
-            new object[] { "Tier1x", HttpStatusCode.Forbidden },
-            new object[] { "Tier2", HttpStatusCode.OK },
-            //new object[] { "Admin", HttpStatusCode.OK }
+            new object[] { CDRole.Tier1, HttpStatusCode.Forbidden },
+            new object[] { CDRole.Tier2, HttpStatusCode.OK },
+            new object[] { CDRole.Admin, HttpStatusCode.OK },
+            new object[] { "anewrole", HttpStatusCode.Forbidden }
         };
 
         [Theory]
