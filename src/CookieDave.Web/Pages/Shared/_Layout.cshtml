@@ -26,7 +26,6 @@
                             <a class="nav-link text-dark" href="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
                         </li>
                         <li class="nav-item">
-                            @*<form class="form-inline" action="/Account/Logout" method="post">*@
                             <form class="form-inline" asp-page="/Account/Logout" method="post">
                                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
                             </form>
@@ -60,17 +59,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Crawl">Crawl</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/ThrowException">ThrowException</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/healthcheck">healthcheck</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/nopagehere">nopagehere</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Enquiry">Enquiry</a>
+                       
                         </li>
 
                     </ul>

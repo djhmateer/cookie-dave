@@ -1,2 +1,2 @@
-az group delete --name CookieDaveTEST497 --no-wait --yes 
+az group delete --name CookieDaveTEST634 --no-wait --yes 
 
