@@ -160,4 +160,7 @@ done
 echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n"
 
 # make it easy to connect to the vm from windows by creating a bat file
-echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n" > ../a.bat
+echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n" > sshCurrentVm.sh
+
+# make it easy to delete resource group at the end of the day from bash
+echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
