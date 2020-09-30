@@ -36,11 +36,9 @@ runcmd:
   - cd /home/dave
   - sudo git clone https://github.com/djhmateer/cookie-dave.git cookie-dave-source
 
-  # run the tests on the server as a last ditch safety net
+  # run the tests on the server as a last ditch safety net (make sure tests run linux side)
   - cd cookie-dave-source/src/CookieDave.Web.IntegrationTests
-  - sudo dotnet test -v n > ~/testout.txt
-
-
+  - sudo dotnet test -v n > /home/dave/testout.txt
 
 
   # create a publish directory for Kestrel
