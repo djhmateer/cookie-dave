@@ -45,30 +45,5 @@ namespace CookieDave.Web.IntegrationTests.Pages
 
             Assert.Equal(expected, response.StatusCode);
         }
-
-        //[Theory]
-        //[MemberData(nameof(RoleAccess))]
-        //public async Task Get_SecurePageAccessibleOnlyByAdminUsers(string role, HttpStatusCode expected)
-        //{
-        //    var client = _factory.WithWebHostBuilder(builder =>
-        //    {
-        //        builder.ConfigureTestServices(services =>
-        //        {
-        //            //patching in the new authentication scheme
-        //            services.AddAuthentication("Test")
-        //                .AddScheme<TestAuthenticationSchemeOptions, TestAuthenticationHandler>("Test",
-        //                    options => options.Role = role);
-        //        });
-        //    }).CreateClient();
-
-        //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
-
-        //    var response = await client.GetAsync("/Tier2RoleNeeded");
-
-        //    Assert.Equal(expected, response.StatusCode);
-        //}
-
-
     }
-
 }

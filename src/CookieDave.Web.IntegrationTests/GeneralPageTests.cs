@@ -23,6 +23,7 @@ namespace CookieDave.Web.IntegrationTests
             new object[] {"/Index"},
             new object[] {"/healthcheck"},
             new object[] {"/Anonymous"},
+            new object[] {"/Enquiry"},
             new object[] {"/Error"}
         };
 
@@ -36,7 +37,6 @@ namespace CookieDave.Web.IntegrationTests
 
             var response = await client.GetAsync(path);
 
-            //response.EnsureSuccessStatusCode();
             response.AssertOk();
 
             Assert.Equal(expected.MediaType, response.Content.Headers.ContentType.MediaType);

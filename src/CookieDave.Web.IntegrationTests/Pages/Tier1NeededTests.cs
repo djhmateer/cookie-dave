@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using CookieDave.Web.Data;
 using CookieDave.Web.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CookieDave.Web.IntegrationTests.Pages
